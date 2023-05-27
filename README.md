@@ -32,6 +32,6 @@ Refer to https://docs.squareline.io/docs/obp.
      * Set the `ui_export_path` to `./components/ui`
 7. Copy `your_board_name/` directory to the SquareLine installation's `boards/Espressif` directory
 8. Create a compressed ZIP file of the _[\__ui_project_name\__](./__ui_project_name__)_ directory
-   9. This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
+   * This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
 9. Rename the ZIP file to `your_board_name.zip`
 10. Copy the `your_board_name.zip` to SquareLine installation's `boards/Espressif/your_board_name` directory
