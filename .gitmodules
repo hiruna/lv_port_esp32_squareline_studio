@@ -1,0 +1,8 @@
+[submodule "__ui_project_name__/components/lvgl_esp32_drivers"]
+	path = __ui_project_name__/components/lvgl_esp32_drivers
+	url = https://github.com/hiruna/lvgl_esp32_drivers.git
+	branch = develop/lvgl_8.3.7_idf_5.2
+[submodule "__ui_project_name__/components/lvgl"]
+	path = __ui_project_name__/components/lvgl
+	url = https://github.com/lvgl/lvgl.git
+	branch = release/v8.3
