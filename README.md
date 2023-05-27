@@ -19,9 +19,9 @@ Refer to https://docs.squareline.io/docs/obp.
 
 1. Clone this repo
 2. Create a new directory under [boards/](./boards)
-   3. Example: `your_board_name/`
+   *  Example: `your_board_name/`
 4. Add the `your_board_name.png` file
-   5. A photo of the board to be displayed in SquareLine Studio.
+   * A photo of the board to be displayed in SquareLine Studio.
 6. Add the `your_board_name.slb`
    * SquareLine board definition file (see https://docs.squareline.io/docs/obp#your_boardslb for more information)
      * For monochrome displays such as the SSD1306 OLED panel, keep the `color_depth` at `8`, SquareLine currently
