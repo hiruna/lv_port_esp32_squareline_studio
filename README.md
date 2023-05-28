@@ -78,5 +78,21 @@ LVGL color depth to `1` via the project's `menuconfig`, build attempts will resu
     * ![monochrome_lv_color_depth_error_check_source_file.png](doc/img/monochrome_lv_color_depth_error_check_source_file.png)
   * To fix this error, simply replace the expected color depth (i.e. `8`) to `1`
     * ![monochrome_lv_color_depth_error_fix.png](doc/img/monochrome_lv_color_depth_error_fix.png)
+    * <b>NOTE:</b> You will need to modify this every time you export the UI files.
   * Building the project after fixing this error will succeed
     * ![monochrome_lv_color_depth_error_fix_build_success.png](doc/img/monochrome_lv_color_depth_error_fix_build_success.png)
+
+### Monochrome display `lv_theme_*_init` error
+Assuming that you've only enabled the "Monochrome theme" for your monochrome display (as you should via the project configuration 
+i.e.`menuconfig`)
+* Example
+  * ![monochrome_theme_menuconfig.png](doc/img/monochrome_theme_menuconfig.png)
+build attempts will result in a similar error to the one shown below:
+  ![monochrome_theme_error.png](doc/img/monochrome_theme_error.png)
+  * The error is in the exported `ui.c` file
+    * ![monochrome_theme_error_source_file.png](doc/img/monochrome_theme_error_source_file.png)
+
+This happens because SquareLine Studio currently does not include an option to select the monochrome theme.
+
+To fix this issue, simply change the theme initialization code as follows:
+![monochrome_theme_error_fixed.png](doc/img/monochrome_theme_error_fixed.png)
