@@ -37,7 +37,7 @@ Refer to https://docs.squareline.io/docs/obp.
 10. Copy the `your_board_name.zip` to SquareLine installation's `boards/Espressif/your_board_name` directory
 
 ## Create a new SquareLine Studio Project
-1. Once you have created a new board (or used one of the existing boards in this repo), open SquareLineStudio.
+1. Once you have created a new board (or used one of the existing boards in this repo), open SquareLine Studio.
 2. The board you've created will appear in SquareLine Studio.
    * _Example of the [ESP32 SSD1306 128x64 OLED](./boards/esp32_ssd1306_128x64) "board"_ is shown below.
 
