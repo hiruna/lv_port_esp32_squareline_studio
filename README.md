@@ -96,3 +96,4 @@ This happens because SquareLine Studio currently does not include an option to s
 
 To fix this issue, simply change the theme initialization code as follows:
 ![monochrome_theme_error_fixed.png](doc/img/monochrome_theme_error_fixed.png)
+* <b>NOTE:</b> You will need to modify this every time you export the UI files.
