@@ -63,6 +63,7 @@ Refer to https://docs.squareline.io/docs/obp.
                   REQUIRES lvgl)
           ```
           * ![fixed_ui_cmakelists_file.png](doc/img/fixed_ui_cmakelists_file.png) 
+          * <b>NOTE:</b> You will need to modify this every time you export the UI files.
       * Reset CMake cache and reload CMake project
 7. Run `idf.py menuconfig` to configure the display drivers and LVGL 
 8. Build the ESP-IDF project
