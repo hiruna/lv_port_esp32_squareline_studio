@@ -19,9 +19,9 @@ Refer to https://docs.squareline.io/docs/obp.
 
 1. Clone this repo
 2. Create a new directory under [boards/](./boards)
-   3. Example: `your_board_name/`
+   *  Example: `your_board_name/`
 4. Add the `your_board_name.png` file
-   5. A photo of the board to be displayed in SquareLine Studio.
+   * A photo of the board to be displayed in SquareLine Studio.
 6. Add the `your_board_name.slb`
    * SquareLine board definition file (see https://docs.squareline.io/docs/obp#your_boardslb for more information)
      * For monochrome displays such as the SSD1306 OLED panel, keep the `color_depth` at `8`, SquareLine currently
@@ -33,6 +33,6 @@ Refer to https://docs.squareline.io/docs/obp.
      * Set the `supported_lvgl_version` to `8.3.*`
 7. Copy `your_board_name/` directory to the SquareLine installation's `boards/Espressif` directory
 8. Create a compressed ZIP file of the _[\__ui_project_name\__](./__ui_project_name__)_ directory
-   9. This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
+   * This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
 9. Rename the ZIP file to `your_board_name.zip`
 10. Copy the `your_board_name.zip` to SquareLine installation's `boards/Espressif/your_board_name` directory
