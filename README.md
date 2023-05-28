@@ -30,6 +30,7 @@ Refer to https://docs.squareline.io/docs/obp.
      * Set the `lvgl_export_path` to `false` as the submodule reference _[\__ui_project_name\__/components/lvgl](./__ui_project_name__)_ is used
      * Set the `pattern_match_files` to `CMakeLists.txt,main/main.c` as this will replace templated tags such as `__UI_PROJECT_NAME__`
      * Set the `ui_export_path` to `./components/ui`
+     * Set the `supported_lvgl_version` to `8.3.*`
 7. Copy `your_board_name/` directory to the SquareLine installation's `boards/Espressif` directory
 8. Create a compressed ZIP file of the _[\__ui_project_name\__](./__ui_project_name__)_ directory
    9. This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
