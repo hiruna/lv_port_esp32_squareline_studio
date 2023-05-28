@@ -25,8 +25,7 @@ Refer to https://docs.squareline.io/docs/obp.
 6. Add the `your_board_name.slb`
    * SquareLine board definition file (see https://docs.squareline.io/docs/obp#your_boardslb for more information)
      * For monochrome displays such as the SSD1306 OLED panel, keep the `color_depth` at `8`, SquareLine currently
-       does not support depth < 8, there is an assertion that is placed in the generated UI files to check if `LV_COLOR_DEPTH`
-       matches the `color_depth` set in the `.slb` file; you will need to manually change this assertion. `(TODO: see below)`
+       does not support depth < 8. You will need to fix this, [see below](#monochrome-display-lv_color_depth-assertion-error).
      * Set the `lvgl_export_path` to `false` as the submodule reference _[\__ui_project_name\__/components/lvgl](./__ui_project_name__)_ is used
      * Set the `pattern_match_files` to `CMakeLists.txt,main/main.c` as this will replace templated tags such as `__UI_PROJECT_NAME__`
      * Set the `ui_export_path` to `./components/ui`
@@ -36,3 +35,47 @@ Refer to https://docs.squareline.io/docs/obp.
    * This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
 9. Rename the ZIP file to `your_board_name.zip`
 10. Copy the `your_board_name.zip` to SquareLine installation's `boards/Espressif/your_board_name` directory
+
+## Create a new SquareLine Studio Project
+1. Once you have created a new board (or used one of the existing boards in this repo), open SquareLineStudio.
+2. The board you've created will appear in SquareLine Studio.
+   * _Example of the [ESP32 SSD1306 128x64 OLED](./boards/esp32_ssd1306_128x64) "board"_ is shown below.
+
+       ![squareline_studio_create_popup.png](doc/img/squareline_studio_create_popup.png)
+3. Set your project settings and create the project
+   * ![squareline_studio_create_project_panel.png](doc/img/squareline_studio_create_project_panel.png)
+4. Once the new project is created and loaded, export the template project via <b>Export -> Create Template Project</b>
+   * ![squareline_studio_export_dropdown.png](doc/img/squareline_studio_export_dropdown.png)
+   * You can export the template project anywhere. In this example, I have created an `export` directory inside the SquareLine project's
+     directory
+     * ![squareline_studio_export_project_filebrowser.png](doc/img/squareline_studio_export_project_filebrowser.png)
+   * Once exported, verify that the template project files are exported in the path you specified
+     * ![verify_squareline_studio_project_export_files.png](doc/img/verify_squareline_studio_project_export_files.png)
+5. Open the exported template project directory via your IDE. I am using CLion to open it.
+### CMake error `add_library command is not scriptable`
+6. Once the project is opened via the IDE, CMake will throw the following error:
+    * ![add_library_cmake_error.png](doc/img/add_library_cmake_error.png)
+      * This error is in the exported `ui` directory's CMakeLists.txt file
+        * ![add_library_cmake_error_in_file.png](doc/img/add_library_cmake_error_in_file.png)
+      * Replace the `add_library(ui ${SOURCES})` line with the following:
+        * ```cmake
+          idf_component_register(SRCS ${SOURCES}
+                  REQUIRES lvgl)
+          ```
+          * ![fixed_ui_cmakelists_file.png](doc/img/fixed_ui_cmakelists_file.png) 
+      * Reset CMake cache and reload CMake project
+7. Run `idf.py menuconfig` to configure the display drivers and LVGL 
+8. Build the ESP-IDF project
+8. Flash the ESP32 board
+
+### Monochrome display `LV_COLOR_DEPTH` assertion error
+As previously mentioned, SquareLine Studio currently does not support color depth < 8. Assuming that you've set the 
+LVGL color depth to `1` via the project's `menuconfig`, build attempts will result in the following error:
+* ![monochrome_lv_color_depth_error.png](doc/img/monochrome_lv_color_depth_error.png)
+  * This error is the result of an automatically added assertion/config check, in the generated UI files. It checks if
+    the set `LV_COLOR_DEPTH` (i.e set via `menuconfig`) matches the `color_depth` set in the board's `.slb` file.
+    * ![monochrome_lv_color_depth_error_check_source_file.png](doc/img/monochrome_lv_color_depth_error_check_source_file.png)
+  * To fix this error, simply replace the expected color depth (i.e. `8`) to `1`
+    * ![monochrome_lv_color_depth_error_fix.png](doc/img/monochrome_lv_color_depth_error_fix.png)
+  * Building the project after fixing this error will succeed
+    * ![monochrome_lv_color_depth_error_fix_build_success.png](doc/img/monochrome_lv_color_depth_error_fix_build_success.png)
