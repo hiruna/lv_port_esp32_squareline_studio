@@ -14,6 +14,12 @@ Project structure in _[\__ui_project_name\__](./__ui_project_name__)_ follows a 
 * LVGL
   * [release/v8.3](https://github.com/lvgl/lvgl/tree/release/v8.3)
 
+### Boards
+| Board Name                                            | Driver  | Image                                                           | Example                                                                                                                               |
+|-------------------------------------------------------|---------|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| [esp32_ssd1306_128x64](./boards/esp32_ssd1306_128x64) | SSD1306 | ![esp32_ssd1306_128x64.png](./boards/esp32_ssd1306_128x64/esp32_ssd1306_128x64.png) | ![esp32_ssd1306_128x64_example.gif](./doc/img/esp32_ssd1306_128x64_example.gif) <br/> [Source Files](./examples/esp32_ssd1306_128x64) |
+
+
 ## Create a new board
 Refer to https://docs.squareline.io/docs/obp.
 

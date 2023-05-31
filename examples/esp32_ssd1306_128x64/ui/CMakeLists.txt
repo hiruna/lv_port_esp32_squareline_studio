@@ -1,0 +1,12 @@
+SET(SOURCES screens/ui_Welcome_Screen.c
+    screens/ui_Loading_Screen.c
+    screens/ui_Roller_Screen.c
+    screens/ui_Switch_Screen.c
+    screens/ui_Chart_Screen.c
+    screens/ui_Final_Screen.c
+    ui.c
+    ui_helpers.c
+    fonts/ui_font_MontserratSemiBold14.c)
+
+idf_component_register(SRCS ${SOURCES}
+        REQUIRES lvgl)
