@@ -13,6 +13,7 @@
 #include "esp_system.h"
 #include "driver/gpio.h"
 #include "esp_timer.h"
+#include "esp_log.h"
 
 #include "lvgl.h"
 
@@ -74,7 +75,7 @@ void lv_tc_finish_cb(lv_event_t *event) {
     lv_obj_t *tCScreen = lv_scr_act();
     if (event->code == LV_EVENT_READY) {
         lv_disp_load_scr(originalScreen);
-        create_demo_application();
+        ui_init();
         lv_obj_del(tCScreen);
     } else {
         ESP_LOGE(TAG, "unexpected lv event code '%d' (expected '%d') after touch calibration", lv_event_get_code(event),
