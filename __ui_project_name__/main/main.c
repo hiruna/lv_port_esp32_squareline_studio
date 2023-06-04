@@ -18,6 +18,19 @@
 
 #include "lvgl_helpers.h"
 #include "ui/ui.h"
+
+#if defined CONFIG_USE_LV_TOUCH_CALIBRATION
+
+#include "lv_tc.h"
+#include "lv_tc_screen.h"
+
+#ifndef USE_CUSTOM_LV_TC_COEFFICIENTS
+
+#include "esp_nvs_tc.h"
+
+#endif
+#endif
+
 /*********************
  *      DEFINES
  *********************/
@@ -45,6 +58,40 @@ void app_main() {
  * If you wish to call *any* lvgl function from other threads/tasks
  * you should lock on the very same semaphore! */
 SemaphoreHandle_t xGuiSemaphore;
+
+
+static void lv_tick_task(void *arg) {
+    (void) arg;
+
+    lv_tick_inc(LV_TICK_PERIOD_MS);
+}
+
+#if defined CONFIG_USE_LV_TOUCH_CALIBRATION
+
+// callback function when touch calibration is complete
+void lv_tc_finish_cb(lv_event_t *event) {
+    lv_obj_t *originalScreen = (lv_obj_t*)(event->user_data);
+    lv_obj_t *tCScreen = lv_scr_act();
+    if (event->code == LV_EVENT_READY) {
+        lv_disp_load_scr(originalScreen);
+        create_demo_application();
+        lv_obj_del(tCScreen);
+    } else {
+        ESP_LOGE(TAG, "unexpected lv event code '%d' (expected '%d') after touch calibration", lv_event_get_code(event),
+                 LV_EVENT_READY);
+    }
+}
+
+// function to create the touch calibration screen and begin the calibration
+static void start_touch_calibration() {
+    lv_obj_t *activeScreen = lv_scr_act();
+    lv_obj_t *tCScreen = lv_tc_screen_create();
+    lv_obj_add_event_cb(tCScreen, lv_tc_finish_cb, LV_EVENT_READY, activeScreen);
+    lv_disp_load_scr(tCScreen);
+    lv_tc_screen_start(tCScreen);
+}
+
+#endif
 
 static void guiTask(void *pvParameter) {
 
@@ -98,6 +145,8 @@ static void guiTask(void *pvParameter) {
 #ifdef CONFIG_LV_TFT_DISPLAY_MONOCHROME
     disp_drv.rounder_cb = disp_driver_rounder;
     disp_drv.set_px_cb = disp_driver_set_px;
+    // disable antialiasing when using monochrome display
+    disp_drv.antialiasing = 0;
 #endif
 
     // need to set resolution for LVGL 8x
@@ -110,23 +159,44 @@ static void guiTask(void *pvParameter) {
     /* Register an input device when enabled on the menuconfig */
 #if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
     lv_indev_drv_t indev_drv;
+#if CONFIG_USE_LV_TOUCH_CALIBRATION // if using LVGL Touch Calibration
+    lv_tc_indev_drv_init(&indev_drv, touch_driver_read);
+#ifndef CONFIG_USE_CUSTOM_LV_TC_COEFFICIENTS // if NOT using custom calibration coefficients
+    lv_tc_register_coeff_save_cb(esp_nvs_tc_coeff_save_cb);
+#endif
+#else // if NOT using LVGL Touch Calibration
     lv_indev_drv_init(&indev_drv);
     indev_drv.read_cb = touch_driver_read;
     indev_drv.type = LV_INDEV_TYPE_POINTER;
+#endif
     lv_indev_drv_register(&indev_drv);
 #endif
 
     /* Create and start a periodic timer interrupt to call lv_tick_inc */
     const esp_timer_create_args_t periodic_timer_args = {
-        .callback = &lv_tick_task,
-        .name = "periodic_gui"
+            .callback = &lv_tick_task,
+            .name = "periodic_gui"
     };
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
     /* SquareLine ui_init() */
+#if CONFIG_LV_TOUCH_CONTROLLER != TOUCH_CONTROLLER_NONE
+    #if CONFIG_USE_CUSTOM_LV_TC_COEFFICIENTS == 0
+    // esp_nvs_tc_coeff_erase(); // this can be used to erase the stored coeff data on nvs
+    if (esp_nvs_tc_coeff_init()) {
+        ui_init();
+    } else {
+        start_touch_calibration();
+    }
+#else
+    lv_tc_load_coeff_from_config();
     ui_init();
+#endif
+#else
+    ui_init();
+#endif
 
     while (1) {
         /* Delay 1 tick (assumes FreeRTOS tick is 10ms */
@@ -136,7 +206,7 @@ static void guiTask(void *pvParameter) {
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
             lv_task_handler();
             xSemaphoreGive(xGuiSemaphore);
-       }
+        }
     }
 
     /* A task should NEVER return */
@@ -145,10 +215,4 @@ static void guiTask(void *pvParameter) {
     free(buf2);
 #endif
     vTaskDelete(NULL);
-}
-
-static void lv_tick_task(void *arg) {
-    (void) arg;
-
-    lv_tick_inc(LV_TICK_PERIOD_MS);
 }
