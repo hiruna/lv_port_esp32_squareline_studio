@@ -2,7 +2,7 @@
 
 ## Overview
 This repository can be used to generate SquareLine Studio boards for ESP32 devices
-(connected to supported display drivers defined in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)).
+(connected to supported display drivers defined in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_8.3.7_idf_5.2)).
 
 Project structure in _[\__ui_project_name\__](./__ui_project_name__)_ follows a similar structure to
 [lv_port_esp32](https://github.com/hiruna/lv_port_esp32/tree/develop/lvgl_8.3.7_idf_5.2).
@@ -10,7 +10,7 @@ Project structure in _[\__ui_project_name\__](./__ui_project_name__)_ follows a 
 * ESP-IDF
   * v5.2 [master](https://github.com/espressif/esp-idf/tree/master/)
 * `lvgl_esp32_drivers`
-  * https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0
+  * https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_8.3.7_idf_5.2
 * LVGL
   * [release/v8.3](https://github.com/lvgl/lvgl/tree/release/v8.3)
 
@@ -38,7 +38,7 @@ Refer to https://docs.squareline.io/docs/obp.
      * Set the `supported_lvgl_version` to `8.3.*`
 7. Copy `your_board_name/` directory to the SquareLine installation's `boards/Espressif` directory
 8. Create a compressed ZIP file of the _[\__ui_project_name\__](./__ui_project_name__)_ directory
-   * This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_7.11.0_idf_5.0)
+   * This is common to all supported display drivers in [lvgl_esp32_drivers](https://github.com/hiruna/lvgl_esp32_drivers/tree/develop/lvgl_8.3.7_idf_5.2)
 9. Rename the ZIP file to `your_board_name.zip`
 10. Copy the `your_board_name.zip` to SquareLine installation's `boards/Espressif/your_board_name` directory
 
